@@ -1,0 +1,24 @@
+{
+  "name": "generator-sql",
+  "version": "1.0.0",
+  "description": "Generate sql from excel for table",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/susantokun/generator-sql.git"
+  },
+  "keywords": [
+    "generator",
+    "sql",
+    "susantokun"
+  ],
+  "author": "susantokun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/susantokun/generator-sql/issues"
+  },
+  "homepage": "https://github.com/susantokun/generator-sql#readme"
+}
