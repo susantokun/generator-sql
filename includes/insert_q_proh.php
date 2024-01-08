@@ -29,7 +29,12 @@ function run_insert_q_proh($data, $conn, $tahun)
     VALUES ";
 
     foreach ($data as $row) {
-        $get_nomor = substr($row[1], 0, 3);
+        $string = $row[1];
+        $parts = explode("/", $string);
+        $get_string = $parts[0];
+        $get_nomor = intval($get_string);
+        $get_padded = str_pad($get_nomor, 6, '0', STR_PAD_LEFT);
+
         $converted_tanggal = DateTime::createFromFormat('m/d/Y', $row[2])->format('Y-m-d');
         $no_spk = $row[1] ?? "";
 
@@ -38,9 +43,9 @@ function run_insert_q_proh($data, $conn, $tahun)
         $tx_tahn = $tahun;
         $kd_linp = 'T0';
         $tp_sord = 'JS01';
-        $kd_prod = 'PD000' . $get_nomor;
+        $kd_prod = 'PD' . $get_padded;
         $kd_rutp = 'RP2402';
-        $kd_sord = 'SD000' . $get_nomor;
+        $kd_sord = 'SD' . $get_padded;
         $kd_ekst = $no_spk;
         $tg_ekst = $converted_tanggal;
         $tx_prod = 'GENERATE';

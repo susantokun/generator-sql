@@ -27,17 +27,22 @@ function run_insert_q_prod($data, $conn, $tahun)
     ) VALUES ";
 
     foreach ($data as $row) {
-        $get_nomor = substr($row[1], 0, 3);
+        $string = $row[1];
+        $parts = explode("/", $string);
+        $get_string = $parts[0];
+        $get_nomor = intval($get_string);
+        $get_padded = str_pad($get_nomor, 6, '0', STR_PAD_LEFT);
+        
         $converted_tanggal = DateTime::createFromFormat('m/d/Y', $row[2])->format('Y-m-d');
-        $dok_draf_psak24 = $tahun . "_" . 'PD000' . $get_nomor . "_dok_draf_psak24.pdf";
-        $dok_rev_draft_final = $tahun . "_" . 'PD000' . $get_nomor . "_dok_rev_draft_final.pdf";
-        $approval_psak24 = $tahun . "_" . 'PD000' . $get_nomor . "_approval_psak24.pdf";
-        $dok_final_psak24 = $tahun . "_" . 'PD000' . $get_nomor . "_dok_final_psak24.pdf";
+        $dok_draf_psak24 = $tahun . "_" . 'PD' . $get_padded . "_dok_draf_psak24.pdf";
+        $dok_rev_draft_final = $tahun . "_" . 'PD' . $get_padded . "_dok_rev_draft_final.pdf";
+        $approval_psak24 = $tahun . "_" . 'PD' . $get_padded . "_approval_psak24.pdf";
+        $dok_final_psak24 = $tahun . "_" . 'PD' . $get_padded . "_dok_final_psak24.pdf";
 
         $kd_prsh = 'SPS0';
         $kd_kprd = 'SPSJKT';
         $tx_tahn = $tahun;
-        $kd_prod = 'PD000' . $get_nomor;
+        $kd_prod = 'PD' . $get_padded;
         $kd_rutp = 'RP2402';
         $no_rutp = '1';
         $tx_rutp = 'DATA DASAR';
@@ -87,7 +92,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '2'; // no_rutp
         $values[6] = 'DOK DRAFT PSAK24'; // tx_rutp
@@ -114,7 +119,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '3'; // no_rutp
         $values[6] = 'SUBMIT DRAFT 1 PSAK2'; // tx_rutp
@@ -141,7 +146,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '4'; // no_rutp
         $values[6] = 'REVISI DRAFT PSAK24'; // tx_rutp
@@ -168,7 +173,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '5'; // no_rutp
         $values[6] = 'DOK REV DRAFT 2 PSAK'; // tx_rutp
@@ -195,7 +200,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '6'; // no_rutp
         $values[6] = 'SUBMIT REV DRAFT PSAK'; // tx_rutp
@@ -222,7 +227,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '7'; // no_rutp
         $values[6] = 'DOK REV DRAFT FINAL'; // tx_rutp
@@ -249,7 +254,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '8'; // no_rutp
         $values[6] = 'SUBMIT REV DRAFT PSAK'; // tx_rutp
@@ -276,7 +281,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '9'; // no_rutp
         $values[6] = 'APPROVAL PSAK24'; // tx_rutp
@@ -303,7 +308,7 @@ function run_insert_q_prod($data, $conn, $tahun)
         $values[0] = 'SPS0'; // kd_prsh
         $values[1] = 'SPSJKT'; // kd_kprd
         $values[2] = $tahun; // tx_tahn
-        $values[3] = 'PD000' . $get_nomor; // kd_prod
+        $values[3] = 'PD' . $get_padded; // kd_prod
         $values[4] = 'RP2402'; // kd_rutp
         $values[5] = '10'; // no_rutp
         $values[6] = 'DOK FINAL PSAK24'; // tx_rutp

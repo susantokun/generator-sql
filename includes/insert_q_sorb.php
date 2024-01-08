@@ -29,7 +29,12 @@ function run_insert_q_sorb($data, $conn, $tahun)
     VALUES ";
 
     foreach ($data as $row) {
-        $get_nomor = substr($row[1], 0, 3);
+        $string = $row[1];
+        $parts = explode("/", $string);
+        $get_string = $parts[0];
+        $get_nomor = intval($get_string);
+        $get_padded = str_pad($get_nomor, 6, '0', STR_PAD_LEFT);
+
         $converted_tanggal = DateTime::createFromFormat('m/d/Y', $row[2])->format('Y-m-d');
         $no_invoice = $row[5] ?? "";
         $harga = floatval(str_replace(',', '', $row[3]));
@@ -47,7 +52,7 @@ function run_insert_q_sorb($data, $conn, $tahun)
         $kd_prsh = 'SPS0';
         $tp_bill = 'SB01';
         $tx_tahn = $tahun;
-        $kd_bill = 'SB000' . $get_nomor;
+        $kd_bill = 'SB' . $get_padded;
         $tx_bill = 'GENERATE';
         $kd_cust = $get_kd_mtra;
         $kd_cusb = $get_kd_mtra;
@@ -59,8 +64,8 @@ function run_insert_q_sorb($data, $conn, $tahun)
         $fl_part = 'X';
         $fl_aprv = 'X';
         $tx_fakp = $no_faktur;
-        $kd_sord = 'SD000' . $get_nomor;
-        $kd_dord = 'PD000' . $get_nomor;
+        $kd_sord = 'SD' . $get_padded;
+        $kd_dord = 'PD' . $get_padded;
         $tg_buat = $converted_tanggal;
         $tx_buat = 'GENERATE';
         $tg_ubah = $converted_tanggal;

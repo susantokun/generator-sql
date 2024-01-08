@@ -21,12 +21,17 @@ function run_insert_q_sors($data, $conn, $tahun)
     VALUES ";
 
     foreach ($data as $row) {
-        $get_nomor = substr($row[1], 0, 3);
+        $string = $row[1];
+        $parts = explode("/", $string);
+        $get_string = $parts[0];
+        $get_nomor = intval($get_string);
+        $get_padded = str_pad($get_nomor, 6, '0', STR_PAD_LEFT);
+
         $converted_tanggal = DateTime::createFromFormat('m/d/Y', $row[2])->format('Y-m-d');
 
         $kd_prsh = 'SPS0';
         $tx_tahn = $tahun;
-        $ob_stra = 'STRASP000' . $get_nomor;
+        $ob_stra = 'STRASP' . $get_padded;
         $kd_stra = 'L11A';
         $no_stra = '1';
         $fl_fap1 = 'X';
@@ -62,7 +67,7 @@ function run_insert_q_sors($data, $conn, $tahun)
         // Baris kedua
         $values[0] = $kd_prsh; // kd_prsh
         $values[1] = $tx_tahn; // tx_tahn
-        $values[2] = 'STRASD000' . $get_nomor; // ob_stra
+        $values[2] = 'STRASD' . $get_padded; // ob_stra
         $values[3] = 'L21A'; // kd_stra
         $values[4] = $no_stra; // no_stra
         $values[5] = ''; // fl_fap1

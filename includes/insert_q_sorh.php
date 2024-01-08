@@ -36,12 +36,17 @@ function run_insert_q_sorh($data, $conn, $tahun)
     VALUES ";
 
     foreach ($data as $row) {
-        $get_nomor = substr($row[1], 0, 3);
+        $string = $row[1];
+        $parts = explode("/", $string);
+        $get_string = $parts[0];
+        $get_nomor = intval($get_string);
+        $get_padded = str_pad($get_nomor, 6, '0', STR_PAD_LEFT);
+
         $converted_tanggal = DateTime::createFromFormat('m/d/Y', $row[2])->format('Y-m-d');
         $get_periode = date("mY", strtotime($converted_tanggal));
         $harga = floatval(str_replace(',', '', $row[3]));
         $no_spk = $row[1] ?? "";
-        $file_spk_nama = $tahun . "_" . 'SP000' . $get_nomor . ".pdf";
+        $file_spk_nama = $tahun . "_" . 'SP' . $get_padded . ".pdf";
         
         $tx_mtra = $row[0];
         $get_kd_mtra = "";
@@ -55,7 +60,7 @@ function run_insert_q_sorh($data, $conn, $tahun)
         $kd_prsh = 'SPS0';
         $tp_sord = 'SP02';
         $tx_tahn = $tahun;
-        $kd_sord = 'SP000' . $get_nomor;
+        $kd_sord = 'SP' . $get_padded;
         $tx_sord = 'GENERATE';
         $kd_cust = $get_kd_mtra;
         $kd_cusd = $get_kd_mtra;
@@ -121,7 +126,7 @@ function run_insert_q_sorh($data, $conn, $tahun)
         $values[0] = $kd_prsh; // kd_prsh
         $values[1] = 'SD24'; // tp_sord
         $values[2] = $tx_tahn; // tx_tahn
-        $values[3] = 'SD000' . $get_nomor; // kd_sord
+        $values[3] = 'SD' . $get_padded; // kd_sord
         $values[4] = $tx_sord; // tx_sord
         $values[5] = $kd_cust; // kd_cust
         $values[6] = $kd_cusd; // kd_cusd

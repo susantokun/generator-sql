@@ -18,14 +18,19 @@ function run_insert_q_sorl($data, $conn, $tahun)
     ) VALUES ";
 
     foreach ($data as $row) {
-        $get_nomor = substr($row[1], 0, 3);
+        $string = $row[1];
+        $parts = explode("/", $string);
+        $get_string = $parts[0];
+        $get_nomor = intval($get_string);
+        $get_padded = str_pad($get_nomor, 6, '0', STR_PAD_LEFT);
+
         $converted_tanggal = DateTime::createFromFormat('m/d/Y', $row[2])->format('Y-m-d');
-        $file_spk_nama = $tahun . "_" . 'SP000' . $get_nomor . ".pdf";
+        $file_spk_nama = $tahun . "_" . 'SP' . $get_padded . ".pdf";
         $file_spk_url = "https://admin.kka-nurichwan.com/uploads/";
 
         $kd_prsh = 'SPS0';
         $tx_tahn = $tahun;
-        $kd_sord = 'SP000' . $get_nomor;
+        $kd_sord = 'SP' . $get_padded;
         $ln_ref1 = '';
         $kd_bhs1 = 'ID';
         $tx_ref2 = $file_spk_nama;
@@ -58,7 +63,7 @@ function run_insert_q_sorl($data, $conn, $tahun)
         // Baris kedua
         $values[0] = $kd_prsh; // kd_prsh
         $values[1] = $tx_tahn; // tx_tahn
-        $values[2] = 'SD000' . $get_nomor; // kd_sord
+        $values[2] = 'SD' . $get_padded; // kd_sord
         $values[3] = $file_spk_url; // ln_ref1
         $values[4] = $kd_bhs1; // kd_bhs1
         $values[5] = ''; // tx_ref2
@@ -74,7 +79,7 @@ function run_insert_q_sorl($data, $conn, $tahun)
         $sql_q_sorl .= "\n('" . implode("', '", $formattedValues) . "'), ";
 
         // Baris ketiga
-        $values[2] = 'SB000' . $get_nomor; // kd_sord
+        $values[2] = 'SB' . $get_padded; // kd_sord
         $values[3] = $file_spk_url; // ln_ref1
         $values[5] = ''; // tx_ref2
         $values[6] = ''; // ln_ref2

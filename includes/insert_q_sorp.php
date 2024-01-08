@@ -26,13 +26,18 @@ function run_insert_q_sorp($data, $conn, $tahun)
     VALUES ";
 
     foreach ($data as $row) {
-        $get_nomor = substr($row[1], 0, 3);
+        $string = $row[1];
+        $parts = explode("/", $string);
+        $get_string = $parts[0];
+        $get_nomor = intval($get_string);
+        $get_padded = str_pad($get_nomor, 6, '0', STR_PAD_LEFT);
+
         $converted_tanggal = DateTime::createFromFormat('m/d/Y', $row[2])->format('Y-m-d');
         $harga = floatval(str_replace(',', '', $row[3]));
         
         $kd_prsh = 'SPS0';
         $tx_tahn = $tahun;
-        $ob_hrga = 'SP000' . $get_nomor . 'NORM00';
+        $ob_hrga = 'SP' . $get_padded . 'NORM00';
         $no_obhr = '001';
         $no_coun = '1';
         $nl_hakh = $harga;
@@ -78,7 +83,7 @@ function run_insert_q_sorp($data, $conn, $tahun)
         // Baris kedua
         $values[0] = $kd_prsh; // kd_prsh
         $values[1] = $tx_tahn; // tx_tahn
-        $values[2] = 'SD000' . $get_nomor . 'NORM00'; // ob_hrga
+        $values[2] = 'SD' . $get_padded . 'NORM00'; // ob_hrga
         $values[3] = ''; // no_obhr
         $values[4] = $no_coun; // no_coun
         $values[5] = $nl_hakh; // nl_hakh

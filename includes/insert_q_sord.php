@@ -18,12 +18,17 @@ function run_insert_q_sord($data, $conn, $tahun)
     ) VALUES ";
 
     foreach ($data as $row) {
-        $get_nomor = substr($row[1], 0, 3);
+        $string = $row[1];
+        $parts = explode("/", $string);
+        $get_string = $parts[0];
+        $get_nomor = intval($get_string);
+        $get_padded = str_pad($get_nomor, 6, '0', STR_PAD_LEFT);
+
         $harga = floatval(str_replace(',', '', $row[3]));
 
         $kd_prsh = 'SPS0';
         $tx_tahn = $tahun;
-        $kd_sord = 'SP000' . $get_nomor;
+        $kd_sord = 'SP' . $get_padded;
         $no_sord = '0001';
         $jl_kuan = '0';
         $kd_kprd = 'SPSJKT';
@@ -55,7 +60,7 @@ function run_insert_q_sord($data, $conn, $tahun)
         // Baris kedua
         $values[0] = $kd_prsh; // kd_prsh
         $values[1] = $tx_tahn; // tx_tahn
-        $values[2] = 'SD000' . $get_nomor; // kd_sord
+        $values[2] = 'SD' . $get_padded; // kd_sord
         $values[3] = $no_sord; // no_sord
         $values[4] = $jl_kuan; // jl_kuan
         $values[5] = $kd_kprd; // kd_kprd
